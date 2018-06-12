@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+	<head>	
+		<meta charset="UTF-8">
+		<script src="../js/jquery-1.11.3.js"></script>
+		<link rel="stylesheet" type="text/css" href="../js/bootstrap.min.css"/>
+		<script src="../js/vue.js"></script>
+		<link rel="stylesheet" type="text/css" href="../sass/PRODUCTS.css"/>
+		<title></title>
+	</head>
+	<body>
+		<header>
+			<ul>
+				<li><a href="">LOGO</a></li>
+				<li><a href="../index.html">HOME</a></li>
+				<li><a href="PRODUCTS.html">PRODUCTS</a></li>
+				<li><a href="ABOUT_US.html">ABOUT US</a></li>
+				<li><a href="CONTACT.html">CONTACT</a></li>
+				<li><a href="index1.html">LOGIN</a></li>
+			</ul>
+		</header>
+		<div class="header">
+			<p>Your location : <a href="../index.html">Home</a> > Products</p>
+		</div>
+		<div class="shopping">
+			<span>Search by : </span><ul>
+				<li id="li"><span>Product Code</span><img src="../img/轮胎-新页面_06.png"/>
+					<ol id="ol">
+						<li>Brand</li>
+						<li>Size</li>
+						<li>Speed</li>
+						<li>Tread Depth</li>
+						<li>Load</li>
+						<li>Ply</li>
+					</ol>
+				</li>
+			</ul>
+			<ul>
+				<li id="li1"><span>Select Options</span><img src="../img/轮胎-新页面_06.png"/>
+					<ol id="ol1">
+					</ol>
+				</li>
+			</ul>
+			<div class="right">
+				<img src="../img/Search.png"/>
+				<input type="text" placeholder="Search here..."/>
+			</div>
+		</div>
+		<div class="main">
+			<ul class="top">
+				<li>Description</li>
+				<li>Your price Inc GST</li>
+				<li>Stock Qty</li>
+				<li>Add Qty</li>
+				<li>Add ALL</li>
+				<li>Qty In Cart</li>
+			</ul>
+			<div class="container body-content">
+		        <div id="test" class="form-group">
+		            <div class="form-group">
+		            	<div class="hei">
+		            		<table class="table table-responsive table-striped">
+			                    <tr v-for="em in arrayData | orderBy sortparam sorttype">
+									<td >{{em.brand+" "+em.size+" "+em.pattern+" "+em.ply+" "+em.loading_index+" "+em.speed_rating+" "+em.tread_depth}}</td>
+			                        <td >{{em.price}}</td>
+			                        <td>{{em.qty}}</td>
+			                        <td><input type="number" min="0" max="999"/></td>
+			                        <td><button class="aaaddd">Add</button></td>
+			                        <td id="tdd"></td>
+			                    </tr>
+			                </table>
+			                <div class="pager" id="pager">
+			                    <span class="form-inline">
+			                        <select class="form-control" v-model="pagesize" v-on:change="showPage(pageCurrent,$event,true)" number>
+			                            <option v-for="item in arrPageSize" value="{{item}}">{{item}}</option>
+			                        </select>
+			                    </span>
+			                    <template v-for="item in pageCount+1">
+			                        <span v-if="item==1" class="btn btn-default" v-on:click="showPage(1,$event)">
+										 首页
+			                        </span>
+			                        <span v-if="item==1" class="btn btn-default" v-on:click="showPage(pageCurrent-1,$event)">
+										上一页
+			                        </span>
+			                        <span v-if="item==1" class="btn btn-default" v-on:click="showPage(item,$event)">
+			                            {{item}}
+			                        </span>
+			                        <span v-if="item==1&&item<showPagesStart-1" class="btn btn-default disabled">
+			                            ...
+			                        </span>
+			                        <span v-if="item>1&&item<=pageCount-1&&item>=showPagesStart&&item<=showPageEnd&&item<=pageCount" class="btn btn-default" v-on:click="showPage(item,$event)">
+			                            {{item}}
+			                        </span>
+			                        <span v-if="item==pageCount&&item>showPageEnd+1" class="btn btn-default disabled">
+			                            ...
+			                        </span>
+			                        <span v-if="item==pageCount&&item!=1" class="btn btn-default" v-on:click="showPage(item,$event)">
+			                            {{item}}
+			                        </span>
+			                        <span v-if="item==pageCount" class="btn btn-default" v-on:click="showPage(pageCurrent+1,$event)">
+										下一页
+			                        </span>
+			                        <span v-if="item==pageCount" class="btn btn-default" v-on:click="showPage(pageCount,$event)">
+										尾页
+			                        </span>
+			                    </template>
+			                    <span class="form-inline">
+			                        <input class="pageIndex form-control" style="width:60px;text-align:center" type="text" v-model="pageCurrent | onlyNumeric" v-on:keyup.enter="showPage(pageCurrent,$event,true)" />
+			                    </span>
+			                    <span>{{pageCurrent}}/{{pageCount}}</span>
+			                </div>
+		            	</div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+		<div class="gou">
+			<a href="SOUPPING.html"><img src="../img/矢量智能对象副本2.png"/></a>
+			<div class="shu"></div>
+		</div>
+		<div class="footer">
+			©SpideGTLongmarch Yyre©2017.All Rights Reserved.
+		</div>
+	</body>
+	<script type="text/javascript">
+		setTimeout(function(){
+			//下拉二级联动鼠标移上事件
+			$("#li").mouseover(function(event){
+				event.stopPropagation();
+				$("#ol").stop(true).slideDown(100);
+			})
+			//下拉二级联动鼠标移出事件
+			$("#li").mouseout(function(event){
+				event.stopPropagation();
+				$("#ol").slideUp(100);
+			})
+		},100)
+			
+		
+		//只能输入正整数过滤器
+        Vue.filter('onlyNumeric', {
+            // model -> view
+            // 在更新 `<input>` 元素之前格式化值
+            read: function (val) {
+                return val;
+            },
+            // view -> model
+            // 在写回数据之前格式化值
+            write: function (val, oldVal) {
+                var number = +val.replace(/[^\d]/g, '')
+                return isNaN(number) ? 1 : parseFloat(number.toFixed(2))
+            }
+        })
+	        
+		//模拟获取数据
+        var getData=function(){
+//			var result;
+			result = [];
+//			console.log(result);
+			$.ajax({
+				type:"get",
+				url:"http://47.92.37.168/luntai/php/index.php?C=Login&M=product_find",
+				dataType:"json",
+				//调整为同步请求
+				async:false,
+				success:function(data){
+					if(data.code == "200"){
+						result = data.data;
+//						console.log(result)
+						//点击添加到购物车
+						setTimeout(function(){
+							$("button").click(function(){
+//								console.log($(this))
+								var arr = $(this).parent().prev().children().val();
+//								console.log(arr)
+								$(this).parent().next().html(arr);
+								console.log($("#tdd"))
+								var td1=$("#tdd");
+								for(var i=0;i<td1.length;i++){
+//									var zz=td1[i].html()
+									console.log(td1.length)
+//									var zong = parseInt($("#tdd")[i].html());
+//									console.log(zong)
+//									zong++;
+//									console.log(zong)
+//									$(".shu").html()
+								}
+							})
+						},100)
+							
+					}else{
+						console.log("数据请求失败");
+					}
+//					console.log(data.data)
+				}
+			});
+			return result;
+		}
+
+        var vue = new Vue({
+            el: "#test",
+			ready:function(){
+				this.arrayDataAll = getData();
+				this.totalCount = this.arrayDataAll.length;
+				this.showPage(this.pageCurrent, null, true);
+			},
+            data: {
+                //总项目数
+                totalCount: 200,
+				//分页数
+				arrPageSize:[10,20,30,40],
+                //当前分页数
+                pageCount: 20,
+                //当前页面
+                pageCurrent: 1,
+                //分页大小
+                pagesize: 7,
+                //显示分页按钮数
+                showPages: 11,
+                //开始显示的分页按钮
+                showPagesStart: 1,
+                //结束显示的分页按钮
+                showPageEnd: 100,
+				//所有数据
+				arrayDataAll:[],
+                //分页数据
+                arrayData: [],
+				//排序字段
+				sortparam:"",
+				//排序方式
+				sorttype:1,
+            },
+            methods: {
+                //分页方法
+                showPage: function (pageIndex, $event, forceRefresh) {
+                    if (pageIndex > 0) {
+                        if (pageIndex > this.pageCount) {
+                            pageIndex = this.pageCount;
+                        }
+                        
+                        //判断数据是否需要更新
+                        var currentPageCount = Math.ceil(this.totalCount / this.pagesize);
+                        if (currentPageCount != this.pageCount) {
+                            pageIndex = 1;
+                            this.pageCount = currentPageCount;
+                        }
+                        else if (this.pageCurrent == pageIndex && currentPageCount == this.pageCount && typeof (forceRefresh) == "undefined") {
+                            console.log("not refresh");
+                            return;
+                        }
+                        
+                        //处理分页点中样式
+                        var buttons = $("#pager").find("span");
+                        for (var i = 0; i < buttons.length; i++) {
+                            if (buttons.eq(i).html() != pageIndex) {
+                                buttons.eq(i).removeClass("active");
+                            }
+                            else {
+                                buttons.eq(i).addClass("active");
+                            }
+                        }
+                        
+                        //从所有数据中去分页数据
+                        var newPageInfo = [];
+                        for (var i = 0; i < this.pagesize; i++) {
+						var index =i+(pageIndex-1)*this.pagesize;
+						if(index>this.totalCount-1)break;
+                            newPageInfo[newPageInfo.length] = this.arrayDataAll[index];
+                        }
+                        this.pageCurrent = pageIndex;
+                        this.arrayData = newPageInfo;
+                        
+                        //计算分页按钮数据
+                        if (this.pageCount > this.showPages) {
+                            if (pageIndex <= (this.showPages - 1) / 2) {
+                                this.showPagesStart = 1;
+                                this.showPageEnd = this.showPages - 1;
+                                console.log("showPage1")
+                            }
+                            else if (pageIndex >= this.pageCount - (this.showPages - 3) / 2) {
+                                this.showPagesStart = this.pageCount - this.showPages + 2;
+                                this.showPageEnd = this.pageCount;
+                                console.log("showPage2")
+                            }
+                            else {
+                                console.log("showPage3")
+                                this.showPagesStart = pageIndex - (this.showPages - 3) / 2;
+                                this.showPageEnd = pageIndex + (this.showPages - 3) / 2;
+                            }
+                        }
+//                      console.log("showPagesStart:" + this.showPagesStart + ",showPageEnd:" + this.showPageEnd + ",pageIndex:" + pageIndex);
+                    }
+
+                },sortBy: function (sortparam) {
+                    this.sortparam = sortparam;
+                    this.sorttype = this.sorttype == -1 ? 1 : -1;
+                }
+            }
+        });
+        var sdf = [];
+        var asd = [];
+        for(var i=0;i<result.length;i++){
+			sdf.push(result[i].brand)
+//			console.log(sdf);
+			if(asd.indexOf(sdf[i])==-1){
+				asd.push(sdf[i]);
+			}
+        }
+        var sdf1 = [];
+        var asd1 = [];
+        for(var i=0;i<result.length;i++){
+			sdf1.push(result[i].size)
+//			console.log(sdf1);
+			if(asd1.indexOf(sdf1[i])==-1){
+				asd1.push(sdf1[i]);
+			}
+        }
+        var sdf2 = [];
+        var asd2 = [];
+        for(var i=0;i<result.length;i++){
+			sdf2.push(result[i].speed_rating)
+//			console.log(sdf2);
+			if(asd2.indexOf(sdf2[i])==-1){
+				asd2.push(sdf2[i]);
+			}
+        }
+        var sdf3 = [];
+        var asd3 = [];
+        for(var i=0;i<result.length;i++){
+			sdf3.push(result[i].tread_depth)
+//			console.log(sdf3);
+			if(asd3.indexOf(sdf3[i])==-1){
+				asd3.push(sdf3[i]);
+			}
+        }
+        var sdf4 = [];
+        var asd4 = [];
+        for(var i=0;i<result.length;i++){
+			sdf4.push(result[i].loading_index)
+//			console.log(sdf4);
+			if(asd4.indexOf(sdf4[i])==-1){
+				asd4.push(sdf4[i]);
+			}
+        }
+        var sdf5 = [];
+        var asd5 = [];
+        for(var i=0;i<result.length;i++){
+			sdf5.push(result[i].ply)
+//			console.log(sdf5);
+			if(asd5.indexOf(sdf5[i])==-1){
+				asd5.push(sdf5[i]);
+			}
+        }
+        console.log(result);
+        console.log(asd5);
+        function slideD(){
+        	$("#li1").mouseover(function(event){
+				event.stopPropagation();
+				$("#ol1").stop(true).slideDown(100);
+			})
+			$("#li1").mouseout(function(event){
+				event.stopPropagation();
+				$("#ol1").slideUp(100);
+			})
+        }
+        function hml(asd){
+			var html = "";
+			html+="<li>"+asd[0]+"</li><li>"+asd[1]+"</li><li>"+asd[2]+"</li><li>"+asd[3]+"</li><li>"+asd[4]+"</li><li>"+asd[5]+"</li><li>"+asd[6]+"</li><li>"+asd[7]+"</li><li>"+asd[8]+"</li>";
+			$("#ol1").html();
+			$("#ol1").html(html);
+        }
+        function hml1(asd){
+			var html = "";
+			html+="<li>"+asd[0]+"</li><li>"+asd[1]+"</li><li>"+asd[2]+"</li><li>"+asd[3]+"</li><li>"+asd[4]+"</li><li>"+asd[5]+"</li><li>"+asd[6]+"</li><li>"+asd[7]+"</li><li>"+asd[8]+"</li><li>"+asd[9]+"</li>";
+			$("#ol1").html();
+			$("#ol1").html(html);
+        }
+        $("#ol").children().eq(0).click(function(){
+        	$(this).parent().parent().children("span").html($(this).html())
+			hml1(asd);
+			slideD();
+		})
+        
+		$("#ol").children().eq(1).click(function(){
+			$(this).parent().parent().children("span").html($(this).html())
+			var html = "";
+			hml(asd2);
+			slideD();
+		})
+		
+		$("#ol").children().eq(2).click(function(){
+			$(this).parent().parent().children("span").html($(this).html())
+			var html = "";
+			html+="<li>"+asd2[0]+"</li><li>"+asd2[1]+"</li><li>"+asd2[2]+"</li><li>"+asd2[3]+"</li><li>"+asd2[4]+"</li><li>"+asd2[5]+"</li><li>"+asd2[6]+"</li><li>"+asd2[7]+"</li><li>"+asd2[8]+"</li><li>"+asd2[9]+"</li><li>"+asd2[10]+"</li><li>"+asd2[11]+"</li><li>"+asd2[12]+"</li><li>"+asd2[13]+"</li><li>"+asd2[14]+"</li><li>"+asd2[15]+"</li><li>"+asd2[16]+"</li><li>"+asd2[17]+"</li>";
+			$("#ol1").html();
+			$("#ol1").html(html);
+			slideD();
+		})
+		
+		$("#ol").children().eq(3).click(function(){
+			$(this).parent().parent().children("span").html($(this).html())
+			var html = "";
+			html+="<li>"+asd3[0]+"</li><li>"+asd3[1]+"</li><li>"+asd3[2]+"</li><li>"+asd3[3]+"</li><li>"+asd3[4]+"</li><li>"+asd3[5]+"</li><li>"+asd3[6]+"</li><li>"+asd3[7]+"</li><li>"+asd3[8]+"</li><li>"+asd3[9]+"</li><li>"+asd3[10]+"</li><li>"+asd3[11]+"</li><li>"+asd3[12]+"</li><li>"+asd3[13]+"</li><li>"+asd3[14]+"</li><li>"+asd3[15]+"</li><li>"+asd3[16]+"</li>";
+			$("#ol1").html();
+			$("#ol1").html(html);
+			slideD();
+		})
+		
+		$("#ol").children().eq(4).click(function(){
+			$(this).parent().parent().children("span").html($(this).html())
+			var html = "";
+			html+="<li>"+asd4[0]+"</li><li>"+asd4[1]+"</li><li>"+asd4[2]+"</li><li>"+asd4[3]+"</li><li>"+asd4[4]+"</li><li>"+asd4[5]+"</li><li>"+asd4[6]+"</li><li>"+asd4[7]+"</li><li>"+asd4[8]+"</li><li>"+asd4[9]+"</li><li>"+asd4[10]+"</li><li>"+asd4[11]+"</li><li>"+asd4[12]+"</li><li>"+asd4[13]+"</li><li>"+asd4[14]+"</li>";
+			$("#ol1").html();
+			$("#ol1").html(html);
+			slideD();
+		})
+		
+		$("#ol").children().eq(5).click(function(){
+			$(this).parent().parent().children("span").html($(this).html())
+			var html = "";
+			html+="<li>"+asd5[0]+"</li><li>"+asd5[1]+"</li><li>"+asd5[2]+"</li><li>"+asd5[3]+"</li><li>"+asd5[4]+"</li><li>"+asd5[5]+"</li><li>"+asd5[6]+"</li><li>"+asd5[7]+"</li><li>"+asd5[8]+"</li>";
+			$("#ol1").html();
+			$("#ol1").html(html);
+			slideD();
+		})
+	</script>
+</html>
+<!--http://47.92.37.168/luntai/php/index.php?C=Login&M=product_find-->
+
+
+

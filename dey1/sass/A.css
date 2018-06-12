@@ -1,0 +1,102 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; }
+
+img {
+  width: 100%; }
+
+ul, li {
+  list-style: none; }
+
+html, body {
+  width: 100%;
+  background: #EFEFEF; }
+
+a {
+  text-decoration: none; }
+
+header {
+  width: 100%;
+  height: 65px;
+  text-align: center;
+  line-height: 65px;
+  background: #1C1C1C; }
+  header a font {
+    font-size: 16px;
+    color: #E4C40F; }
+
+.main {
+  width: 100%;
+  background: #EFEFEF;
+  overflow: hidden; }
+  .main .zho {
+    width: 760px;
+    background: white;
+    margin: 5% auto; }
+    .main .zho .top {
+      width: 100%;
+      text-align: center;
+      padding: 6% 0 0 0; }
+      .main .zho .top img {
+        width: 30%; }
+    .main .zho .title {
+      font-size: 22px;
+      color: #E4C40F;
+      width: 100%;
+      text-align: center;
+      padding: 7% 0 0 0; }
+    .main .zho p {
+      width: 100%;
+      height: 15px;
+      text-align: center; }
+    .main .zho .ap {
+      margin: 5px 0;
+      color: red; }
+    .main .zho .ipt {
+      width: 33%;
+      border: 1px solid gainsboro;
+      border-radius: 2px;
+      text-align: center;
+      margin: 0 auto; }
+      .main .zho .ipt img {
+        width: 15px;
+        height: 15px;
+        vertical-align: -4px; }
+      .main .zho .ipt input {
+        outline: none;
+        width: 85%;
+        padding: 11px 0;
+        border: none; }
+    .main .zho button {
+      display: block;
+      width: 33%;
+      margin: 0 auto;
+      padding: 12px 0;
+      background: #F1C40F;
+      border: none;
+      outline: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer; }
+    .main .zho .bom {
+      width: 33%;
+      margin: 0 auto; }
+      .main .zho .bom .check {
+        width: 12px;
+        cursor: pointer; }
+      .main .zho .bom span {
+        color: gray;
+        font-size: 12px;
+        margin-left: 8px;
+        cursor: pointer; }
+      .main .zho .bom p {
+        float: right;
+        font-size: 12px;
+        color: gray; }
+
+#shu {
+  font-size: 14px;
+  color: red; }
+
+/*# sourceMappingURL=A.css.map */

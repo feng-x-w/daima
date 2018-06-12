@@ -1,0 +1,77 @@
+注册功能
+请求地址：http://47.92.37.168/luntai/php/index.php?C=Login&M=sign
+请求方式：post
+请求参数：
+username:用户名 （手机号或邮箱）
+password:密码 （3位以上）
+返回值：
+自己观察服务器响应
+
+登录功能
+请求地址：http://47.92.37.168/luntai/php/index.php?C=Login&M=login
+请求方式：post
+请求参数：
+username:用户名 （手机号或邮箱）
+password:密码 （3位以上）
+返回值：
+自己观察服务器响应
+
+
+商品展示
+请求地址：http://localhost:8888/luntai/php/index.php?C=Login&M=product_find
+请求方式：get
+返回值 ：
+自己观察服务器响应
+
+字段说明
+brand品牌 ；size：型号； pattern：花纹； ply:层级； loading_index:载重；speed rating:速度级别；
+tread depth：花纹深度；qty:库存；price：价格； 
+
+
+提交订单
+地址:http://172.16.129.67:8888/luntai/php/index.php?C=Login&M=check_out
+请求方式：post
+请求参数：
+username：登陆者账号
+name：用户名 
+phone：电话 
+address:地址
+remarks:备注
+products_id：整条商品 字符串
+
+
+我的历史
+地址http://172.16.129.67:8888/luntai/php/index.php?C=Login&M=find_order
+请求方式:post
+请求参数：username：登陆者名称
+
+返回值自己看
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/jquery-1.11.3.js"></script>
+		<script src="../js/jquery.cookie.js"></script>
+		<link rel="stylesheet" type="text/css" href="../sass/A.css"/>
+		<title></title>
+	</head>
+	<body>
+		<header>
+			<a href="#">
+				<font>LOGO</font>
+			</a>
+		</header>
+		<div class="main">
+			<div class="zho">
+				<div class="top">
+					<img src="img/logo.png"/>
+				</div>
+				<div class="title">
+					Account Management Registration
+				</div>
+				<p></p>
+				<div class="ipt">
+					<input type="text" placeholder="User Name 用户名" id="name"/><img src="../img/输入名称.png"/>
+				</div>
+				<p></p>
+				<div class="ipt">
+					<input type="password" placeholder="Password 密码" id="pass"/><img src="../img/输入密码.png"/>
+				</div>
+				<p></p>
+				<div class="ipt">
+					<input type="password" placeholder="Confirm Password 确认密码" id="pass2"/><img src="../img/输入密码.png"/>
+				</div>
+				<p></p>
+				<p class="ap"></p>
+				<button class="btn">Register</button>
+				<p></p>
+				<p></p>
+				<div class="bom">
+					<input type="checkbox" class="check" id="ch" /><label for="ch"><span>Remember Me</span><p>Existing username <a href="index1.html">Click Login</a></p></label>
+				</div>
+				<p></p>
+				<p></p>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+//		var huming = /^[]$/
+		var bun = true;
+		$("#pass2").blur(function(){
+			if($("#pass2").val() != $("#pass").val()){
+				$(".ipt").eq(2).css("border-color","red");
+				$("#pass2").val("")
+				$("#pass2").attr("placeholder","密码跟上次不一致")
+				bun = false;
+			}else{
+				$(".ipt").eq(2).css("border-color","green");
+				bun = true;
+			}
+		})
+		$("#name").blur(function(){
+			if($(this).val() == ""){
+				$(".ipt").eq(0).css("border-color","red");
+				$("#name").attr("placeholder","用户名不能为空")
+				bun = false;
+			}else{
+				$(".ipt").eq(0).css("border-color","green");
+				bun = true;
+			}
+		})
+		$("#pass").blur(function(){
+			if($(this).val() == ""){
+				$(".ipt").eq(1).css("border-color","red");
+				$("#pass").attr("placeholder","密码不能为空")
+				bun = false;
+			}else{
+				$(".ipt").eq(1).css("border-color","green");
+				bun = true;
+			}
+		})
+		//打开网页就要判断有没有存储cookie
+		//如果有放到用户的输入框
+		//并且设置勾选框为勾选状态
+//		if($.cookie('username')){
+//			$('#name').val($.cookie('username'));
+//			$("#pass").val($.cookie('username'));
+//			$('.check').attr('checked',true);
+//		}
+		//先得到勾选框的状态
+		var cookieName;
+		$('.check').change(function(){
+			cookieName=$(this).prop('checked');
+			console.log(cookieName);
+		})
+		//登录的时候  判断  有没有勾选
+		$('.btn').click(function(){
+				if(bun == false || $("#name").val() == "" && $("#pass").val() == "" && $("#pass2").val() == ""){
+					$(".ap").html("请填写完整注册表")
+				}else{
+			$.ajax({
+				type:"post",
+				url:"http://47.92.37.168/luntai/php/index.php?C=Login&M=sign",
+				dataType:"json",
+				data:{
+					"username":$('#name').val(),
+					"password":$('#pass').val()
+				},success:function(data){
+					if(data.code == "200") {
+						alert("注册成功！")
+						if(cookieName){//勾选了
+//							$.cookie('username',$('#name').val(),{expires:7});
+//							$.cookie('psd',$('#pass').val(),{expires:7});
+							sessionStorage.setItem('username',$('#name').val());
+							location.href='index1.html'
+						}else{//没有勾选
+							sessionStorage.setItem('username',$('#name').val());
+							location.href='index1.html'
+						}
+					}
+					if(data.code == "303") {
+						$(".ap").html(data.message)
+					}
+				}
+			});
+			return false;
+				}
+		})
+		
+		
+	</script>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/jquery-1.11.3.js"></script>
+		<script src="../js/jquery.cookie.js"></script>
+		<link rel="stylesheet" type="text/css" href="../sass/A.css"/>
+		<title></title>
+	</head>
+	<body>
+		<header>
+			<a href="#">
+				<font>LOGO</font>
+			</a>
+		</header>
+		<div class="main">
+			<div class="zho">
+				<div class="top">
+					<img src="img/logo.png"/>
+				</div>
+				<div class="title">
+					Login Into Your Account
+				</div>
+				<p></p>
+				<div class="ipt">
+					<input type="text" placeholder="User Name" id="name"/><img src="../img/输入名称.png"/>
+				</div>
+				<p></p>
+				<div class="ipt">
+					<input type="password" placeholder="Password" id="pass"/><img src="../img/输入密码.png"/>
+				</div>
+				<p></p>
+				<p id="shu"></p>
+				<button class="btn">Sign In</button>
+				<p></p>
+				<p></p>
+				<div class="bom">
+					<input type="checkbox" class="check" id="ch" /><label for="ch"><span>Remember Me</span><p>No account name <a href="ZhuCe.html">Click register</a></p></label>
+				</div>
+				<p></p>
+				<p></p>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//打开网页就要判断有没有存储cookie
+		//如果有放到用户的输入框
+		//并且设置勾选框为勾选状态
+		if($.cookie('username')){
+			$('#name').val($.cookie('username'));
+			$("#pass").val($.cookie('username'));
+			$('.check').attr('checked',true);
+		}
+		//先得到勾选框的状态
+		var cookieName;
+		$('.check').change(function(){
+			cookieName=$(this).prop('checked');
+			console.log(cookieName);
+		})
+		//登录的时候  判断  有没有勾选
+		$('.btn').click(function(){
+			if($("#name").val() == "" && $("#pass").val() == ""){
+				$("#shu").html("请填完整用户名跟密码");
+			}else{
+				$("#shu").html("");
+				$.ajax({
+					type:"post",
+					url:"http://47.92.37.168/luntai/php/index.php?C=Login&M=login",
+					dataType:"json",
+					data:{
+						"username":$('#name').val(),
+						"password":$('#pass').val()
+					},success:function(data){
+						if(data.code == "200") {
+	//						alert(111)
+							if(cookieName){//勾选了
+								$.cookie('username',$('#name').val(),{expires:7});
+								$.cookie('psd',$('#pass').val(),{expires:7});
+								sessionStorage.setItem('username',$('#name').val());
+								location.href='../index.html'
+							}else{//没有勾选
+								sessionStorage.setItem('username',$('#name').val());
+								location.href='../index.html'
+							}
+						}
+						if(data.code == "303") {
+							$(".ap").html(data.message)
+						}
+					}
+				});
+	//			if(cookieName){//勾选了
+	//				$.cookie('username',$('#name').val(),{expires:7});
+	//				$.cookie('psd',$('#pass').val(),{expires:7});
+	//				sessionStorage.setItem('username',$('#name').val());
+	//				location.href='new_file.html'
+	//			}else{//没有勾选
+	//				sessionStorage.setItem('username',$('#name').val());
+	//				location.href='new_file.html'
+	//			}
+				return false;
+			}
+		})
+	</script>
+</html>
